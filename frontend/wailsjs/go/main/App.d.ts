@@ -3,11 +3,13 @@
 
 export function CheckConn():Promise<boolean>;
 
-export function GetGamesData():Promise<void>;
-
 export function GetGamesList():Promise<string>;
 
 export function GetPins():Promise<string>;
+
+export function GetSwitch1Games():Promise<string>;
+
+export function GetSwitch2Games():Promise<string>;
 
 export function IsMac():Promise<boolean>;
 
@@ -16,3 +18,7 @@ export function PinGame(arg1:string):Promise<void>;
 export function Reconnect():Promise<boolean>;
 
 export function SetGame(arg1:string,arg2:string):Promise<void>;
+
+export function SetGameWithImage(arg1:string,arg2:string,arg3:string):Promise<void>;
+
+export function SwitchToConsole(arg1:string):Promise<boolean>;

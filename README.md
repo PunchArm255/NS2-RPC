@@ -1,11 +1,11 @@
-# NS-RPC
+# NS2-RPC
 
-The definitive way to display your Nintendo Switch games in Discord. 🎮
+The definitive way to display your Nintendo Switch 2 games in Discord. 🎮
 
 ## Introduction
 
-NS-RPC (Nintendo Switch Rich Presence) is a Wails app for Windows and macOS.
-It makes it easy for anyone to share what they are playing on the Switch to Discord in a fancy Rich Presence, like a PC game.
+NS2-RPC (Nintendo Switch 2 Rich Presence) is a Wails app for Windows and macOS.
+It makes it easy for anyone to share what they are playing on the Switch 2 to Discord in a fancy Rich Presence, like a PC game.
 
 This app was built using [Wails](https://wails.io) (🏴󠁧󠁢󠁷󠁬󠁳󠁿 pride) and [SolidJS](https://solidjs.com).
 
@@ -13,7 +13,7 @@ This app was built using [Wails](https://wails.io) (🏴󠁧󠁢󠁷󠁬󠁳󠁿
 
 ### With NS-RPC you can..
 
-- Display that you are using your Switch across all of Discord.
+- Display that you are using your Switch 2 across all of Discord.
 - Select from an extensive list of games to show off.
 - Set a custom status message to let everyone know exactly what you're doing.
 - Pin your favourite games into a quick list.

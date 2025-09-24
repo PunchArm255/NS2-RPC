@@ -8,7 +8,6 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
-	"sort"
 
 	"github.com/hugolgst/rich-go/client"
 	"golang.org/x/exp/slices"
@@ -32,10 +31,10 @@ type Game struct {
 
 type Pins []string
 
-var gamesList Games
 var connErr bool = false
 
-const clientID string = "1114647533562646700"
+const switch1ClientID string = "1114647533562646700"
+const switch2ClientID string = "1420215431465140285"
 const gamesURL string = "https://raw.githubusercontent.com/Da532/NS-RPC/master/games.json"
 
 func NewApp() *App {
@@ -44,11 +43,8 @@ func NewApp() *App {
 
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
-	err := a.GetGamesData()
-	if err != nil {
-		panic(err)
-	}
-	err = client.Login(clientID)
+	// Don't load games on startup - let the frontend handle it
+	err := client.Login(switch1ClientID)
 	if err != nil {
 		connErr = true
 	}
@@ -71,7 +67,7 @@ func (a *App) CheckConn() bool {
 }
 
 func (a *App) Reconnect() bool {
-	err := client.Login(clientID)
+	err := client.Login(switch1ClientID)
 	if err != nil {
 		return false
 	}
@@ -87,52 +83,36 @@ func (a *App) Reconnect() bool {
 	return true
 }
 
-func (a *App) GetGamesData() error {
-	resp, err := http.Get(gamesURL)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return err
-	}
-	err = json.Unmarshal(body, &gamesList)
-	if err != nil {
-		return err
-	}
-	sort.Slice(gamesList, func(i, j int) bool {
-		return gamesList[i].Title < gamesList[j].Title
-	})
-	return nil
-}
 
 func (a *App) GetGamesList() string {
-	data, err := json.Marshal(gamesList)
-	if err != nil {
-		a.GetGamesData()
-		return err.Error()
-	}
-	return string(data)
+	// Return Switch 1 games by default
+	return a.GetSwitch1Games()
 }
 
 func (a *App) SetGame(title string, status string) {
-	var selectedGame Game
-	for _, game := range gamesList {
-		if game.Title == title {
-			selectedGame = game
-			break
-		}
+	// Set the game activity with the game title as image key
+	err := client.SetActivity(client.Activity{
+		LargeImage: title, // Use the game title as the image key
+		Details:    title,
+		State:      cases.Title(language.English).String(status),
+	})
+	if err != nil {
+		panic(err)
 	}
-	if selectedGame.Title != "" {
-		err := client.SetActivity(client.Activity{
-			LargeImage: selectedGame.Img,
-			Details:    selectedGame.Title,
-			State:      cases.Title(language.English).String(status),
-		})
-		if err != nil {
-			panic(err)
-		}
+}
+
+func (a *App) SetGameWithImage(title string, status string, imageKey string) {
+	// Set the game activity with a specific image key
+	// Debug: Print the image key being used
+	println("Setting game with image key:", imageKey)
+	
+	err := client.SetActivity(client.Activity{
+		LargeImage: imageKey,
+		Details:    title,
+		State:      cases.Title(language.English).String(status),
+	})
+	if err != nil {
+		panic(err)
 	}
 }
 
@@ -198,4 +178,61 @@ func (a *App) GetPins() string {
 
 func (a *App) IsMac() bool {
 	return runtime.GOOS != "windows"
+}
+
+func (a *App) SwitchToConsole(console string) bool {
+	client.Logout()
+	var clientID string
+	if console == "switch2" {
+		clientID = switch2ClientID
+	} else {
+		clientID = switch1ClientID
+	}
+	
+	err := client.Login(clientID)
+	if err != nil {
+		connErr = true
+		return false
+	}
+	err = client.SetActivity(client.Activity{
+		LargeImage: "home",
+		Details:    "Home",
+		State:      "Idle",
+	})
+	if err != nil {
+		connErr = true
+		return false
+	}
+	connErr = false
+	return true
+}
+
+func (a *App) GetSwitch1Games() string {
+	// Try to read from local file first (much faster)
+	file, err := os.ReadFile("games.json")
+	if err == nil {
+		return string(file)
+	}
+	
+	// Fallback to remote URL only if local file doesn't exist
+	resp, err := http.Get(gamesURL)
+	if err != nil {
+		return `[{"title": "Home", "img": "home"}]`
+	}
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return `[{"title": "Home", "img": "home"}]`
+	}
+	return string(body)
+}
+
+func (a *App) GetSwitch2Games() string {
+	// Return Switch 2 specific games with correct image keys
+	switch2Games := `[
+		{"title": "Home", "img": "home"},
+		{"title": "Mario Kart World", "img": "mkw"},
+		{"title": "Cyberpunk 2077: Complete Edition", "img": "cp2077"}
+	]`
+	return switch2Games
 }

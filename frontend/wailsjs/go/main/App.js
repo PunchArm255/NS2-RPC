@@ -6,16 +6,20 @@ export function CheckConn() {
   return window['go']['main']['App']['CheckConn']();
 }
 
-export function GetGamesData() {
-  return window['go']['main']['App']['GetGamesData']();
-}
-
 export function GetGamesList() {
   return window['go']['main']['App']['GetGamesList']();
 }
 
 export function GetPins() {
   return window['go']['main']['App']['GetPins']();
+}
+
+export function GetSwitch1Games() {
+  return window['go']['main']['App']['GetSwitch1Games']();
+}
+
+export function GetSwitch2Games() {
+  return window['go']['main']['App']['GetSwitch2Games']();
 }
 
 export function IsMac() {
@@ -32,4 +36,12 @@ export function Reconnect() {
 
 export function SetGame(arg1, arg2) {
   return window['go']['main']['App']['SetGame'](arg1, arg2);
+}
+
+export function SetGameWithImage(arg1, arg2, arg3) {
+  return window['go']['main']['App']['SetGameWithImage'](arg1, arg2, arg3);
+}
+
+export function SwitchToConsole(arg1) {
+  return window['go']['main']['App']['SwitchToConsole'](arg1);
 }

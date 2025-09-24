@@ -1,6 +1,6 @@
 {
   "version": "1.0.2",
-  "name": "NS-RPC",
+  "name": "NS2-RPC",
   "outputfilename": "NS-RPC",
   "frontend:install": "yarn install",
   "frontend:build": "yarn build",
@@ -15,6 +15,6 @@
     "companyName": "AlmightyCX",
     "productVersion": "1.0.2",
     "copyright": "AlmightyCX",
-    "comments": "An application to display your Switch Games in Discord."
+    "comments": "An application to display your Switch 2 Games in Discord."
   }
 }
