@@ -1,46 +1,67 @@
-# NS2-RPC
+# NS2-RPC 🚀
 
-The definitive way to display your Nintendo Switch 2 games in Discord. 🎮
+Show off your Nintendo Switch & Nintendo Switch 2 playtime in Discord.
 
-## Introduction
+## What is NS2-RPC?
 
-NS2-RPC (Nintendo Switch 2 Rich Presence) is a Wails app for Windows and macOS.
-It makes it easy for anyone to share what they are playing on the Switch 2 to Discord in a fancy Rich Presence, like a PC game.
+NS2-RPC is a Wails + SolidJS desktop client (Windows & macOS) that lets Discord display whatever you’re playing on the **Nintendo Switch & Switch 2**.
+This fork enhances the original NS-RPC by adding full Switch 2 support, UI polish, and backend wiring for new titles.
 
-This app was built using [Wails](https://wails.io) (🏴󠁧󠁢󠁷󠁬󠁳󠁿 pride) and [SolidJS](https://solidjs.com).
+## Why this fork exists
 
-![NS-RPC's design](https://i.imgur.com/FRbQwzC.png)
+* Original NS-RPC only supported the original Switch.
+* I rewrote large parts: added Switch 2 support, cleaned up UI, reworked the backend.
+* I want a lighter, faster, maintainable foundation.
 
-### With NS-RPC you can..
+## Features
 
-- Display that you are using your Switch 2 across all of Discord.
-- Select from an extensive list of games to show off.
-- Set a custom status message to let everyone know exactly what you're doing.
-- Pin your favourite games into a quick list.
-- Experience my _questionable_ user interface.
+* Automatically advertise “Playing on Switch 2: \[Game]” in Discord presence
+* Custom status messages
+* Pin/unpin games you use often
+* Simple UI to pick and switch titles
+* Modular game metadata — easy to extend
 
-## Prerequisites
+## Currently supported games
 
-All you need to get going is some common sense and the [Discord App](https://discordapp.com) installed to the same machine.
+* Mario Kart World
+* Cyberpunk 2077: Ultimate Edition
 
-Users running Windows 10 or earlier _may_ encounter issues running NS-RPC due to Wails' use of **Microsoft WebView2** on Windows. **If** you do encounter problems, ensure this is installed.
+Everything else is on the TODO list.
 
-## Installing
+## Known Switch 2 exclusives (as of Sept 24, 2025)
 
-If you're looking for convenience, you'll find already built copies of NS-RPC for
-both Windows and macOS [here](https://github.com/Da532/NS-RPC/releases).
+Here are some games currently marketed or widely recognized as **Switch 2 exclusives** (or “Switch 2 only” titles) according to Nintendo Life and other sources.
+Use this list as reference when wiring in future games.
 
-## Rewrite
+* Mario Kart World
+* Fast Fusion
+* Nintendo Switch 2 Welcome Tour
+* Survival Kids
+* Donkey Kong Bananza
+* Drag x Drive
+* Hyrule Warriors: Age of Imprisonment
+* Kirby Air Riders
+* The Duskbloods
+* Splatoon Raiders
 
-Long time users may realise this is a brand new app! 
-NS-RPC's original codebase was not something I wanted to maintain.
-It was the first project I wrote in JavaScript and I utilised Electron for this.
+*(Note: many of these are announced or planned exclusives — availability or exclusivity status may change over time.)*
 
-The new version uses Wails rather than Electron which I much prefer working in.
-The frontend uses SolidJS. I much prefer using this to React for its sheer speed and removal of jank, while still using JSX.
+## Installation & Setup
 
-## Anything else?
+1. Download a build from the **releases page**.
+2. Make sure Discord is running locally before launching NS2-RPC.
+3. If on Windows 10 or earlier and things break, install **WebView2** (required by Wails).
+4. Launch NS2-RPC, pick a game, optionally enter a custom status, and watch Discord update.
 
-Not as of yet. If you have feature suggestions or need support, head over to this handy [Discord server](https://discord.gg/StDcdMu) and talk to us.
+## How to add support for a new game (basic dev steps)
 
-Have a good one!
+1. Add the game’s metadata (name, internal identifier, icon path) to your JSON/config.
+2. Hook the RPC backend: when user selects that game, send the appropriate presence payload.
+3. Add the new title to the frontend UI (game picker)
+4. Test it on both OS targets (Windows/macOS)
+5. Merge & release
+
+## Contributing & support
+
+Want to help? Open an issue or PR!
+Feature requests, bugs, new-game support — bring them on.
